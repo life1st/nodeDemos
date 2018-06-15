@@ -1,0 +1,16 @@
+{
+  "name": "count",
+  "version": "1.0.0",
+  "description": "count number",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "WTFPL",
+  "devDependencies": {
+    "@koa/cors": "^2.2.1",
+    "koa": "^2.5.1",
+    "koa-router": "^7.4.0"
+  }
+}
