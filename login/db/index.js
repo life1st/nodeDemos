@@ -56,6 +56,7 @@ async function add(data, collection) {
 }
 
 const USERS_COLLECTION = 'users'
+const POSTER_COLLECTION = 'poster'
 module.exports = {
   add, find,
   users: {
@@ -64,6 +65,17 @@ module.exports = {
     },
     findUser(where) {
       return find(where, USERS_COLLECTION)
+    }
+  },
+  poster: {
+    add(poster) {
+      return add(poster, POSTER_COLLECTION)
+    },
+    find(id) {
+      return find(id, POSTER_COLLECTION)
+    },
+    getList() {
+      // todo
     }
   }
 }

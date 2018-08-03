@@ -1,5 +1,5 @@
-const { addUser, findUser} = require('../db').users
-const { verifyUserInfo} = require('../utils')
+const { addUser, findUser } = require('../db').users
+const { verifyUserInfo } = require('../utils')
 
 async function postLogin(ctx) {
   let body = ctx.request.body
@@ -7,38 +7,39 @@ async function postLogin(ctx) {
   let username = body.username
   let password = body.password
   if (verifyUserInfo(username, password)) {
-    ctx.body = {
+    return {
       msg: 'wrong user info',
       ok: false
     }
-    return
   }
 
   let where = { username }
 
   await findUser(where).then(res => {
     if (res.length === 0) {
-      ctx.body = {
+      return {
         msg: 'no user info',
         ok: false
       }
     } else {
       for (let item of res) {
         if (item.password === password) {
-          ctx.body = {
+          return {
             msg: 'verified.',
             ok: true
           }
-          return
         }
       }
-      ctx.body = JSON.stringify({
+      return {
         msg: 'password not match',
         ok: false
-      })
+    }
     }
   }).catch(err => {
-    //
+    return {
+      msg: err,
+      ok: false
+    }
   })
 }
 
@@ -49,34 +50,33 @@ async function postRegister(ctx) {
   let password = body.password
 
   if (!(username && password)) {
-    ctx.body = JSON.stringify({
+    return {
       msg: 'no user info',
       ok: false
-    })
-    return
+    }
   }
 
   let where = { username }
   await findUser(where).then(res => {
     return new Promise((resolve, reject) => {
       if (res.length === 0) {
-        resolve(addUser({username, password}))
+        resolve(addUser({ username, password }))
       } else {
-        ctx.body = JSON.stringify({
+        reject({
           msg: 'already had same user',
           ok: false
         })
-        reject('find same user')
       }
     })
   }).then(res => {
-    ctx.body = JSON.stringify({
+    ctx.body = {
       msg: 'regist success',
       ok: true
-    })
+    }
   }).catch(err => {
     // todo maybe error...
-    console.log('catch err', err)
+    console.log('catch err', err.msg)
+    return err
   })
 }
 

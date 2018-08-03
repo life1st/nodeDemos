@@ -2,6 +2,7 @@ const Router = require('koa-router')
 let router = new Router()
 
 let { postLogin, postRegister} = require('./module/users')
+let { getPoster, postPoster} = require('./module/poster')
 
 router.get('/', ctx => {
   ctx.body = {
@@ -10,18 +11,25 @@ router.get('/', ctx => {
   }
 })
 
-router.get('/login', ctx => {
+const LOGIN_PATH = '/login'
+router.get(LOGIN_PATH, ctx => {
   ctx.body = 'hellow login'
-}).post('/login', async ctx => await postLogin(ctx))
+}).post(LOGIN_PATH, async ctx => {
+  await postLogin(ctx)
+})
 
-router.get('/register', ctx => {
+const REGISTER_PATH = '/register'
+router.get(REGISTER_PATH, ctx => {
   ctx.body = 'hellow register'
-}).post('/register', async ctx => await postRegister(ctx))
+}).post(REGISTER_PATH, async ctx => {
+  await postRegister(ctx)
+})
 
-router.get('/poster', async ctx => {
-  
-}).post('/poster', async ctx => {
-
+const POSTER_PATH = '/poster'
+router.get(POSTER_PATH, async ctx => {
+  await getPoster(ctx)
+}).post(POSTER_PATH, async ctx => {
+  await postPoster(ctx)
 })
 
 module.exports = router
