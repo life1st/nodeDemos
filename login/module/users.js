@@ -1,32 +1,34 @@
-const { add, find} = require('./db')
+const { addUser, findUser} = require('../db').users
+const { verifyUserInfo} = require('../utils')
 
 async function postLogin(ctx) {
   let body = ctx.request.body
 
   let username = body.username
   let password = body.password
-  if (!(username && password)) {
-    ctx.body = JSON.stringify({
-      msg: 'no user info',
+  if (verifyUserInfo(username, password)) {
+    ctx.body = {
+      msg: 'wrong user info',
       ok: false
-    })
+    }
+    return
   }
 
   let where = { username }
 
-  await find(where).then(res => {
+  await findUser(where).then(res => {
     if (res.length === 0) {
-      ctx.body = JSON.stringify({
+      ctx.body = {
         msg: 'no user info',
         ok: false
-      })
+      }
     } else {
       for (let item of res) {
         if (item.password === password) {
-          ctx.body = JSON.stringify({
+          ctx.body = {
             msg: 'verified.',
             ok: true
-          })
+          }
           return
         }
       }
@@ -40,7 +42,7 @@ async function postLogin(ctx) {
   })
 }
 
-async function postRegist(ctx) {
+async function postRegister(ctx) {
   let body = ctx.request.body
 
   let username = body.username
@@ -55,10 +57,10 @@ async function postRegist(ctx) {
   }
 
   let where = { username }
-  await find(where).then(res => {
+  await findUser(where).then(res => {
     return new Promise((resolve, reject) => {
       if (res.length === 0) {
-        resolve(add({username, password}))
+        resolve(addUser({username, password}))
       } else {
         ctx.body = JSON.stringify({
           msg: 'already had same user',
@@ -79,5 +81,5 @@ async function postRegist(ctx) {
 }
 
 module.exports = {
-  postLogin, postRegist
+  postLogin, postRegister
 }

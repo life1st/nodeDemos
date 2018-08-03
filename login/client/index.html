@@ -48,7 +48,7 @@
     let username = userEl.value
     let password = passEl.value
     if (username && password) {
-      axios.post(`${API_BASE}/regist`, {
+      axios.post(`${API_BASE}/register`, {
         username, password
       }).then(res => {
         let data = res.data
