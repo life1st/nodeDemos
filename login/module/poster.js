@@ -1,35 +1,56 @@
-const { add, find} = require('../db').poster
+const { add, find, findAll, remove} = require('../db').poster
 
 async function getPoster(ctx) {
   let query = ctx.query
 
   let posterId = query.id
-  let where = { posterId: Number(posterId)}
-  await find(where).then(res => {
-    if (res.length === 0) {
+  if (posterId) {
+    let where = { posterId: Number(posterId)}
+    await find(where).then(res => {
+      if (res.length === 0) {
+        ctx.body = {
+          ok: false,
+          msg: 'not has anything.'
+        }
+      } else {
+        let content = []
+        res.forEach(item => {
+          content.push({
+            content: item.content,
+            posterId: item.posterId
+          })
+        })
+        ctx.body = {
+          ok: true,
+          content
+        }
+      }
+    }).catch(err => {
       ctx.body = {
         ok: false,
-        msg: 'not has anything.'
+        msg: err
       }
-    } else {
-      let content = []
-      res.forEach(item => {
-        content.push({
-          content: item.content,
-          posterId: item.posterId
-        })
-      })
+    })
+  } else {
+    await findAll().then(res => {
+      if (res.length === 0) {
+        ctx.body = {
+          ok: false,
+          msg: 'empty poster'
+        }
+      } else {
+        ctx.body = {
+          ok: true,
+          content: res
+        }
+      }
+    }).catch(err => {
       ctx.body = {
-        ok: true,
-        content
+        ok: false,
+        msg: err
       }
-    }
-  }).catch(err => {
-    ctx.body = {
-      ok: false,
-      msg: err
-    }
-  })
+    })
+  }
 }
 
 async function postPoster(ctx) {
@@ -48,6 +69,24 @@ async function postPoster(ctx) {
   })
 }
 
+async function removePoster(ctx) {
+  let body = ctx.request.body
+
+  let posterId = body.id
+  let where = {posterId: Number(posterId)}
+  await remove(where).then(res => {
+    ctx.body = {
+      ok: true,
+      msg: res
+    }
+  }).catch(err => {
+    ctx.body = {
+      ok: false,
+      msg: err
+    }
+  })
+}
+
 module.exports = {
-  getPoster, postPoster
+  getPoster, postPoster, removePoster
 }

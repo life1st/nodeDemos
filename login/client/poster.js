@@ -19,22 +19,31 @@ let postIdEl = document.querySelector('#postId')
 let getPostBtn = document.querySelector('#getPost')
 getPostBtn.addEventListener('click', () => {
   let id = postIdEl.value
-  if (id.length === 0) {
-    resEl.innerText = 'Err, no Post ID'
-  } else {
-    axios.get(`${API_BASE}/poster`, {
-      params: {
-        id
-      }
-    }).then(res => {
-      let data = res.data
-      if (data.ok)  {
-        resEl.innerText = data.content[0].content
-      } else {
-        resEl.innerText = data.msg
-      }
-    }).catch(err => {
-      resEl.innerText = err
-    })
+  axios.get(`${API_BASE}/poster`, {
+    params: { id }
+  }).then(res => {
+    let data = res.data
+    if (data.ok) {
+      resEl.innerHTML = data.content
+      .map(item => `<p class="poster-item">${item.posterId}</p>`)
+      .reduce((oldVal, newVal) => oldVal + newVal)
+    } else {
+      resEl.innerText = data.msg
+    }
+  }).catch(err => {
+    resEl.innerText = err
+  })
+})
+
+resEl.addEventListener('click', ($event) => {
+  let target = $event.target
+  if (target.className === 'poster-item') {
+    if (confirm('delete?')) {
+      axios.delete(`${API_BASE}/poster`, {
+        data: { posterId: target.innerText }
+      }).then(res => {
+        console.log(res)
+      })
+    }
   }
 })

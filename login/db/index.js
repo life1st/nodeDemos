@@ -42,13 +42,25 @@ async function add(data, collection) {
 
     return new Promise((resolve, reject) => {
       dbo.collection(collection).insertOne(data, (err, res) => {
-        if (err) {
-          console.log('err', err)
-          reject(err)
-        } else {
-          console.log('add success...', res.ops)
-          resolve(res)
-        }
+        if (err) reject(err)
+        console.log('add success...', res.ops)
+        resolve(res)
+
+        db.close()
+      })
+    })
+  })
+}
+
+async function remove(where, collection) {
+  return connectDb().then(db => {
+    let dbo = db.db('nodelogin')
+
+    return new Promise((resolve, reject) => {
+      dbo.collection(collection).deleteOne(where, (err, obj) => {
+        if (err) reject(err)
+        resolve(obj)
+
         db.close()
       })
     })
@@ -74,8 +86,11 @@ module.exports = {
     find(id) {
       return find(id, POSTER_COLLECTION)
     },
-    getList() {
-      // todo
+    findAll() {
+      return find('', POSTER_COLLECTION)
+    },
+    remove(id) {
+      return remove(id, POSTER_COLLECTION)
     }
   }
 }

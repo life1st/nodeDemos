@@ -2,7 +2,7 @@ const Router = require('koa-router')
 let router = new Router()
 
 let { postLogin, postRegister} = require('./module/users')
-let { getPoster, postPoster} = require('./module/poster')
+let { getPoster, postPoster, removePoster} = require('./module/poster')
 
 router.get('/', ctx => {
   ctx.body = {
@@ -30,6 +30,8 @@ router.get(POSTER_PATH, async ctx => {
   await getPoster(ctx)
 }).post(POSTER_PATH, async ctx => {
   await postPoster(ctx)
+}).delete(POSTER_PATH, async ctx => {
+  await removePoster(ctx)
 })
 
 module.exports = router
