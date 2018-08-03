@@ -64,6 +64,20 @@
       resEl.innerText = `ERR, input your info`
     }
   })
+
+  function autoRegister() {
+    let name = () => `bot${new Date().getTime()}`
+    let pass = () => `password${Math.random()}`
+
+    userEl.value = name()
+    passEl.value = pass()
+    registerBtn.click()
+  }
+
+  // setInterval(() => {
+  //   autoRegister()
+  //   console.log('registering...')
+  // }, 0)
 </script>
 </body>
 </html>
