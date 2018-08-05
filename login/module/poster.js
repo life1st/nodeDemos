@@ -70,9 +70,9 @@ async function postPoster(ctx) {
 }
 
 async function removePoster(ctx) {
-  let body = ctx.request.body
+  let params = ctx.params
 
-  let posterId = body.id
+  let posterId = params.id
   let where = {posterId: Number(posterId)}
   await remove(where).then(res => {
     ctx.body = {

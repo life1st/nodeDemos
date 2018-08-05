@@ -14,24 +14,17 @@ router.get('/', ctx => {
 const LOGIN_PATH = '/login'
 router.get(LOGIN_PATH, ctx => {
   ctx.body = 'hellow login'
-}).post(LOGIN_PATH, async ctx => {
-  await postLogin(ctx)
-})
+}).post(LOGIN_PATH, postLogin)
 
 const REGISTER_PATH = '/register'
 router.get(REGISTER_PATH, ctx => {
   ctx.body = 'hellow register'
-}).post(REGISTER_PATH, async ctx => {
-  await postRegister(ctx)
-})
+}).post(REGISTER_PATH, postRegister)
 
 const POSTER_PATH = '/poster'
-router.get(POSTER_PATH, async ctx => {
-  await getPoster(ctx)
-}).post(POSTER_PATH, async ctx => {
-  await postPoster(ctx)
-}).delete(POSTER_PATH, async ctx => {
-  await removePoster(ctx)
-})
+router
+  .get(POSTER_PATH, getPoster)
+  .post(POSTER_PATH, postPoster)
+  .delete(`${POSTER_PATH}/:id`, removePoster)
 
 module.exports = router
