@@ -39,9 +39,13 @@ async function getPoster(ctx) {
           msg: 'empty poster'
         }
       } else {
+        let content = []
+        res.forEach(item => {
+          content.push(item.posterId)
+        })
         ctx.body = {
           ok: true,
-          content: res
+          content
         }
       }
     }).catch(err => {

@@ -7,36 +7,38 @@ async function postLogin(ctx) {
   let username = body.username
   let password = body.password
   if (verifyUserInfo(username, password)) {
-    return {
+    ctx.body = {
       msg: 'wrong user info',
       ok: false
     }
+    return
   }
 
   let where = { username }
 
   await findUser(where).then(res => {
     if (res.length === 0) {
-      return {
+      ctx.body = {
         msg: 'no user info',
         ok: false
       }
     } else {
       for (let item of res) {
         if (item.password === password) {
-          return {
+          ctx.body = {
             msg: 'verified.',
             ok: true
           }
+          return
         }
       }
-      return {
+      ctx.body = {
         msg: 'password not match',
         ok: false
-    }
+      }
     }
   }).catch(err => {
-    return {
+    ctx.body = {
       msg: err,
       ok: false
     }
@@ -50,7 +52,7 @@ async function postRegister(ctx) {
   let password = body.password
 
   if (!(username && password)) {
-    return {
+    ctx.body = {
       msg: 'no user info',
       ok: false
     }
@@ -76,7 +78,10 @@ async function postRegister(ctx) {
   }).catch(err => {
     // todo maybe error...
     console.log('catch err', err.msg)
-    return err
+    ctx.body = {
+      ok: false,
+      msg: err.msg
+    }
   })
 }
 
