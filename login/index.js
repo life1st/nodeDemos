@@ -4,7 +4,7 @@ let app = new Koa()
 const router = require('./router')
 
 const cors = require('@koa/cors')
-const Koabody = require('koa-body')
+const koabody = require('koa-body')
 
 app.use(async (ctx, next) => {
   const start = Date.now()
@@ -13,7 +13,7 @@ app.use(async (ctx, next) => {
   console.log(ctx.method, ctx.path, `time: ${ms} ms`)
 })
 app.use(cors())
-app.use(Koabody())
+app.use(koabody())
 app.use(router.routes())
 app.listen(3003, err => {
   if (err) {

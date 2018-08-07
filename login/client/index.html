@@ -21,9 +21,17 @@
   <input type="text" id="postId">
   <button id="getPost">get Post List</button>
 </div>
+<div class="uploader">
+  <form action="http://localhost:3003/file" method="post">
+    <input type="file" id="upload">
+    <input type="submit" value="submit">
+  </form>
+  <button id="submitFile">submitFile</button>
+</div>
 <div class="result" id="result"></div>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="user.js"></script>
 <script src="poster.js"></script>
+<script src="uploader.js"></script>
 </body>
 </html>

@@ -43,14 +43,12 @@ function insertPoster(id) {
     if (data.ok) {
       resEl.innerHTML = data.content.length > 1 
       ? data.content
-      .map(item => `<p class="poster-item">${item}</p>`)
-      .reduce((oldVal, newVal) => oldVal + newVal)
+          .reduce((oldVal, newVal) => oldVal + `<p class="poster-item">${newVal}</p>`)
       : data.content
           .map(item => `<div>
                           <p>${item.posterId}</p>
                           <p>${item.content}</p>
                         </div>`)
-          .reduce((oldVal, newVal) => oldVal + newVal)
     } else {
       resEl.innerText = data.msg
     }
