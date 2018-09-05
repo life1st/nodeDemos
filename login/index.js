@@ -13,7 +13,7 @@ app.use(async (ctx, next) => {
   console.log(ctx.method, ctx.path, `time: ${ms} ms`)
 })
 app.use(cors())
-app.use(koabody())
+app.use(koabody({ multipart: true}))
 app.use(router.routes())
 app.listen(3003, err => {
   if (err) {

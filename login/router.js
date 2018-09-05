@@ -22,7 +22,7 @@ router
   .delete(`${POSTER_PATH}/:id`, removePoster)
 
 const FILE_PATH = '/file'
-router.get(FILE_PATH, getFile)
+router.get(FILE_PATH + '/:name', getFile)
   .post(FILE_PATH, postFile)
 
 router.get('*', ctx => {
