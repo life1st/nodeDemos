@@ -13,7 +13,14 @@ app.use(async (ctx, next) => {
   console.log(ctx.method, ctx.path, `time: ${ms} ms`)
 })
 app.use(cors({
-  origin: 'http://localhost:8000,https://life1st.github.io'
+  origin: (ctx) => {
+    const allowMap = [
+      'http://localhost:8000',
+      'https://life1st.github.io'
+    ]
+    const origin = ctx.req.headers.origin
+    return allowMap.includes(origin) ? origin : ''
+  }
 }))
 app.use(koabody({ multipart: true}))
 app.use(router.routes())
