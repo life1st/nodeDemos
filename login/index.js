@@ -22,7 +22,10 @@ app.use(cors({
     return allowMap.includes(origin) ? origin : ''
   }
 }))
-app.use(koabody({ multipart: true}))
+app.use(koabody({
+  multipart: true,
+  formLimit: '20mb'
+}))
 app.use(router.routes())
 app.listen(3003, err => {
   if (err) {
