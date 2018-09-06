@@ -14,6 +14,13 @@ submitFileBtn.addEventListener('click', () => {
     data: formData,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    onUploadProgress: (event) => {
+      console.log(event)
+      let complete = (event.loaded / event.total * 100 | 0)
+      if (complete === 100) complete = 'done.'
+      else complete += '%'
+      document.querySelector('.progress').innerText = complete
     }
   }).then(res => {
     fileEl.value = null

@@ -26,10 +26,15 @@
     <input type="file" id="upload" multiple>
     <input type="submit" value="submit">
   </form>
-  <button id="submitFile">submitFile</button>
+  <button id="submitFile">submitFile</button><span class="progress"></span>
 </div>
 <div class="result" id="result"></div>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const API_BASE = location.host.includes('localhost')
+    ? 'http://localhost:3003'
+    : 'https://api.life1st.me/loginCenter'
+</script>
 <script src="user.js"></script>
 <script src="poster.js"></script>
 <script src="uploader.js"></script>
