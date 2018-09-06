@@ -12,7 +12,9 @@ app.use(async (ctx, next) => {
   const ms = Date.now() - start
   console.log(ctx.method, ctx.path, `time: ${ms} ms`)
 })
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:8000,https://life1st.github.io'
+}))
 app.use(koabody({ multipart: true}))
 app.use(router.routes())
 app.listen(3003, err => {

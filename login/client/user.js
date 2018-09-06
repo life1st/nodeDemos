@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:3003'
+const API_BASE = location.host.includes('localhost')
+  ? 'http://localhost:3003'
+  : 'http://api.life1st.me/loginCenter'
 let userEl = document.querySelector('#username')
 let passEl = document.querySelector('#password')
 let resEl = document.querySelector('#result')
