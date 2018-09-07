@@ -3,7 +3,7 @@ let router = new Router()
 
 let { postLogin, postRegister} = require('./module/users')
 let { getPoster, postPoster, removePoster} = require('./module/poster')
-let { getFile, postFile} = require('./module/file')
+let { getFile, postFile, deleteFile} = require('./module/file')
 
 const LOGIN_PATH = '/login'
 router.get(LOGIN_PATH, ctx => {
@@ -24,6 +24,7 @@ router
 const FILE_PATH = '/file'
 router.get(FILE_PATH + '/:name', getFile)
   .post(FILE_PATH, postFile)
+  .delete(FILE_PATH + '/:name', deleteFile)
 
 router.get('*', ctx => {
   ctx.body = {

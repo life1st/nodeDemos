@@ -1,4 +1,5 @@
 const fs = require('fs')
+const filePath = 'file'
 const readFilePms = (path) => (
   new Promise((resolve, reject) => {
     fs.readFile(path, (err, data) => {
@@ -7,6 +8,15 @@ const readFilePms = (path) => (
     })
   })
 )
+const removeFilePms = (path) => (
+  new Promise((resolve, reject) => {
+    fs.unlink(path, err => {
+      if (err) reject(err)
+      resolve()
+    })
+  })
+)
+
 
 async function postFile(ctx) {
   let req = ctx.request
@@ -15,7 +25,7 @@ async function postFile(ctx) {
     const reader = fs.createReadStream(file.path)
     const ext = file.name.split('.').pop()
     const fileName = `${Math.random().toString().slice(2)}.${ext}`
-    const upStream = fs.createWriteStream(`file/${fileName}`)
+    const upStream = fs.createWriteStream(`${filePath}/${fileName}`)
     reader.pipe(upStream)
 
     return fileName
@@ -38,7 +48,6 @@ async function postFile(ctx) {
 
 async function getFile(ctx) {
   const fileName = ctx.params.name
-  const filePath = 'file'
   const ext = fileName.split('.').pop()
 
   try {
@@ -56,6 +65,34 @@ async function getFile(ctx) {
   // ctx.body = 'now can get file'
 }
 
+async function deleteFile(ctx) {
+  const fileName = ctx.params.name
+  if (fileName === 'all') {
+    // fuck it.
+    ctx.status = 200
+    ctx.body = {
+      ok: false,
+      msg: 'fuck it.'
+    }
+  } else {
+    await removeFilePms(`${filePath}/${fileName}`)
+      .then(() => {
+        ctx.status = 200
+        ctx.body = {
+          ok: true,
+          msg: 'good boy.'
+        }
+      })
+      .catch(err => {
+        ctx.status = 200
+        ctx.body = {
+          ok: false,
+          msg: err
+        }
+      })
+  }
+}
+
 module.exports = {
-  getFile, postFile
+  getFile, postFile, deleteFile
 }
