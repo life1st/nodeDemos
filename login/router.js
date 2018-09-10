@@ -8,14 +8,18 @@ let { IMTeaPot} = require('./module/NO_COFFEE')
 
 
 const LOGIN_PATH = '/login'
-router.get(LOGIN_PATH, ctx => {
-  ctx.body = 'hellow login'
-}).post(LOGIN_PATH, postLogin)
+router
+  .get(LOGIN_PATH, ctx => {
+    ctx.body = 'hellow login'
+  })
+  .post(LOGIN_PATH, postLogin)
 
 const REGISTER_PATH = '/register'
-router.get(REGISTER_PATH, ctx => {
-  ctx.body = 'hellow register'
-}).post(REGISTER_PATH, postRegister)
+router
+  .get(REGISTER_PATH, ctx => {
+    ctx.body = 'hellow register'
+  })
+  .post(REGISTER_PATH, postRegister)
 
 const POSTER_PATH = '/poster'
 router
