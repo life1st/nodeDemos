@@ -24,7 +24,8 @@ app.use(cors({
 }))
 app.use(koabody({
   multipart: true,
-  formLimit: '20mb'
+  uploadDir: './file',
+  maxFieldsSize: 2 * 1024 * 1024
 }))
 app.use(router.routes())
 app.listen(3003, err => {
